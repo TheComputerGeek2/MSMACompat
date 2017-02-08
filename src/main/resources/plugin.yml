@@ -1,5 +1,23 @@
-main: me.thecomputergeek2.msmacompat.MSMACompat.java
+main: me.thecomputergeek2.msmacompat.MSMACompat
 version: 0.0.1
 name: MSMACompat
 author: TheComputerGeek2
-depend: [MobArena, MagicSpells, MassiveCore]
+depend: [MobArena, MassiveCore]
+softdepend: [MagicSpells]
+
+permissions:
+  msmacompat.basecommand: {description: use base command, default: false}
+  msmacompat.version:     {description: see the plugin version, default: false}
+  msmacompat.config:      {description: edit config, default: false}
+
+  msmacompat.*:
+    default: false
+    children:
+      msmacompat.all: true
+
+  msmacompat.all:
+    default: op
+    children:
+      msmacompat.basecommand: true
+      msmacompat.version: true
+      msmacompat.config: true

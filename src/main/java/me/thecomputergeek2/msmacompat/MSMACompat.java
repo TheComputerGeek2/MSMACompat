@@ -3,6 +3,8 @@ package me.thecomputergeek2.msmacompat;
 import com.massivecraft.massivecore.MassivePlugin;
 import me.thecomputergeek2.msmacompat.cmd.CmdMSMA;
 import me.thecomputergeek2.msmacompat.engine.IntegrationMagicSpells;
+import me.thecomputergeek2.msmacompat.engine.IntegrationMobArena;
+import me.thecomputergeek2.msmacompat.entity.ArenaColl;
 import me.thecomputergeek2.msmacompat.entity.MConfColl;
 
 public class MSMACompat extends MassivePlugin
@@ -25,9 +27,11 @@ public class MSMACompat extends MassivePlugin
 		this.activate(
 			// Collections
 			MConfColl.class,
+			ArenaColl.class,
 			
 			// "Integration"
 			IntegrationMagicSpells.class,
+			IntegrationMobArena.class,
 			
 			// Command
 			CmdMSMA.class
