@@ -1,0 +1,5 @@
+main: me.thecomputergeek2.msmacompat.MSMACompat.java
+version: 0.0.1
+name: MSMACompat
+author: TheComputerGeek2
+depend: [MobArena, MagicSpells, MassiveCore]
