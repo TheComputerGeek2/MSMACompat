@@ -9,6 +9,7 @@ import com.massivecraft.massivecore.Engine;
 import com.nisovin.magicspells.MagicSpells;
 import com.nisovin.magicspells.Spell;
 import com.nisovin.magicspells.events.SpellCastEvent;
+import me.thecomputergeek2.msmacompat.entity.ArenaColl;
 import me.thecomputergeek2.msmacompat.entity.MConf;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -64,15 +65,27 @@ public class EngineMagicSpells extends Engine
         Wave current = manager.getCurrent();
         WaveType type = (current != null) ? current.getType() : null;
         
-        if (shouldCancelCast(event, type)) event.setCancelled(true);
+        if (shouldCancelCast(event, type, arena.arenaName())) event.setCancelled(true);
     }
     
-    public boolean shouldCancelCast(SpellCastEvent event, WaveType type)
+    public boolean shouldCancelCast(SpellCastEvent event, WaveType type, String arenaName)
     {
         Spell spell = event.getSpell();
-        if (MConf.get().disabledSpells.contains(spell.getInternalName())) return true;
-        if (type == WaveType.BOSS && MConf.get().disabledOnBosses.contains(spell.getInternalName())) return true;
-        if (type == WaveType.SWARM && MConf.get().disabledOnSwarms.contains(spell.getInternalName())) return true;
+        String internalName = spell.getInternalName();
+        
+        // Check the global rules
+        if (MConf.get().disabledSpells.contains(internalName)) return true;
+        if (type == WaveType.BOSS && MConf.get().disabledOnBosses.contains(internalName)) return true;
+        if (type == WaveType.SWARM && MConf.get().disabledOnSwarms.contains(internalName)) return true;
+        
+        // Now let's see if there are any arena specific rules
+        me.thecomputergeek2.msmacompat.entity.Arena arenaInfo = ArenaColl.get().getByName(arenaName);
+        if (arenaInfo == null) return false;
+        
+        if (arenaInfo.getDisabledSpells().contains(internalName)) return true;
+        if (type == WaveType.BOSS && arenaInfo.getDisabledOnBosses().contains(internalName)) return true;
+        if (type == WaveType.SWARM && arenaInfo.getDisabledOnSwarms().contains(internalName)) return true;
+        
         return false;
     }
     
